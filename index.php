@@ -121,27 +121,54 @@
             }
 
             //
-            // Light sensors
+            // Motion
             // 
+            if (window.DeviceMotionEvent) {
+                
+                window.addEventListener('devicemotion', function () {
+                    document.getElementById("dmx").innerHTML = event.acceleration.x;
+                    document.getElementById("dmy").innerHTML = event.acceleration.y;
+                }, true);
+
+            }
+            else {
+
+                document.getElementById("dmx").innerHTML = 'N/A'; 
+                document.getElementById("dmy").innerHTML = 'N/A';
+
+            } 
+
+            //
+            // Light sensors
+            //
+
             window.addEventListener('devicelight', function(e) {                
-
-                document.getElementById("lux").innerHTML = e.value; // value in double
-
+                document.getElementById("lux1").innerHTML = e.value; // value in double
                 //< 400   Indoor
                 //400-1000    Office lighting. Outdoor (in foggy San Francisco)
                 //> 1000  Outdoor daylight (anywhere else in California)
-
             }); 
            
 
             window.addEventListener('lightlevel', function(e) {
-               
                 document.getElementById("lux2").innerHTML = e.value; // value in double
-
                 //dim < 50 lux    dark enough that the light produced by a white background is eye-straining or distracting
                 //normal  50-10000 lux    office building hallway, very dark overcast day, office lighting, sunrise or sunset on a clear day, overcast day, or similar
                 //bright  > 10000 lux direct sunlight, or similarly bright conditions that make it hard to see things that aren't high-contrast
+            }); 
 
+            //
+            // Proximity sensors
+            //
+
+            window.addEventListener('deviceproximity', function(e) {
+                document.getElementById("prox1").innerHTML = e.value; // value in double
+            }, function(e) {
+                document.getElementById("prox1").innerHTML = "N/A"; 
+            });
+
+            window.addEventListener('userproximity', function(e) {
+               document.getElementById("prox2").innerHTML = e.value; // value in double
             }); 
 
             //
@@ -211,11 +238,35 @@
         </tr> 
         <tr>
             <td>light 1</td>
-            <td id="lux" align="right"></td>
+            <td id="lux1" align="right"></td>
         </tr>
         <tr>
             <td>light 2</td>
             <td id="lux2" align="right"></td>
+        </tr>
+
+        <tr>
+            <td colspan="2" id="pos"><b>Proximity</b></td>
+        </tr> 
+        <tr>
+            <td>proximity 1</td>
+            <td id="prox1" align="right"></td>
+        </tr>
+        <tr>
+            <td>proximity 2</td>
+            <td id="prox2" align="right"></td>
+        </tr>
+
+        <tr>
+            <td colspan="2" id="pos"><b>Motion</b></td>
+        </tr> 
+        <tr>
+            <td>X</td>
+            <td id="dmx" align="right"></td>
+        </tr>
+        <tr>
+            <td>Y</td>
+            <td id="dmy" align="right"></td>
         </tr>
         
     </table>

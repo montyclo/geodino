@@ -1,0 +1,8 @@
+git commit -a -m "<comment here>"
+git push
+oc start-build geodino
+oc logs -f bc/geodino
+oc logs -f dc/geodino
+
+
+
