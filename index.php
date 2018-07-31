@@ -25,7 +25,39 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/favicons/apple-touch-icon-precomposed-72x72.png"><!-- iPad 1 e 2 -->
     <link rel="apple-touch-icon-precomposed" href="images/favicons/apple-touch-icon-precomposed-57x57.png"><!-- iPhone, iPod e Android 2.2+ -->
 
+    <!-- jq/jqm/css3 stack libraries -->
+
+    <link rel="stylesheet" href="js/jquery.mobile-1.4.5.css?x=<?php echo filemtime('js/jquery.mobile-1.4.5.css'); ?>" />
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js?x=<?php echo filemtime('js/jquery-1.11.3.min.js'); ?>"></script>    
+    <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js?x=<?php echo filemtime('js/jquery.mobile-1.4.5.min.js'); ?>"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js?x=<?php echo filemtime('js/jquery.validate.min.js'); ?>"></script>
+    
+    <link rel="stylesheet" href="css/custom-jqm.css?x=<?php echo filemtime('css/custom-jqm.css'); ?>"/>
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css?x=<?php echo filemtime('css/jquery.dataTables.min.css'); ?>">
+
+    <!-- jquery ui plugin -->
+    <link rel="stylesheet" href="js/jquery-ui.min.css?x=<?php echo filemtime('js/jquery-ui.min.css'); ?>">
+    <link rel="stylesheet" href="js/jquery-ui.theme.css?x=<?php echo filemtime('js/jquery-ui.theme.css'); ?>">      
+    <script src="js/jquery-ui.min.js?x=<?php echo filemtime('js/jquery-ui.min.js'); ?>"></script>
+
+    <!-- data tables plugin -->
+    <script src="js/jquery.dataTables.min.js?x=<?php echo filemtime('js/jquery.dataTables.min.js'); ?>"></script>
+    <script src="js/dataTables.jqueryui.min.js?x=<?php echo filemtime('js/dataTables.jqueryui.min.js'); ?>"></script>
+
+    <!-- extra animations -->
+    <link rel="stylesheet" href="js/animate.css?x=<?php echo filemtime('js/animate.css'); ?>"/> 
+
     <style>
+
+    /* marker classes used for dynamic view purposes */         
+        
+    .blink_me {
+      animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {  
+      50% { opacity: 0; }
+    }   
 
     th {
         text-align: left;
@@ -33,6 +65,33 @@
     }
 
     </style>
+
+
+    <script type="text/javascript">
+
+        function msgbox(message, title, success, transition) {
+            var target = success ? '#confirm-box' : '#msg-box';
+            $(target + '-message').html(message);
+            $(target + '-title').html(title ? title : "Avviso");        
+            $('#confirm-box-ok').on("click", success ? success : function() {});        
+            $(target).popup (
+                "open", 
+                {
+                    allowSamePageTransition: true, 
+                    transition: transition ? transition : 'pop' 
+                }
+            );      
+        }
+
+        function test2() {
+            msgbox( "Alert body message", "Alert title" );
+        }
+
+        function test3() {
+            msgbox( "Confirm body message", "Confirm title", function() { console.log('OK pressed'); } );   
+        }
+
+    </script>
 
     <script type="text/javascript">
 
@@ -68,11 +127,10 @@
             getLocation();
             
             document.getElementById('uptime').innerHTML = new Date();
-
-            setTimeout('reload()', 2000);  
-
+            setTimeout('reload()', 2000);
 
         }
+
 
         function init() {
 
@@ -205,97 +263,211 @@
 
 </head>
 
-<body onload="init()">
+<body
+    class="ui-mobile-viewport ui-overlay-c" 
+    onload="init()">
 
-<div>
+<div id="page1" data-role="page">
+
+    <div data-role="header" data-id="foo1" data-position="fixed">
+            
+        <div class="ui-bar-b" style="height: 46px; text-align: center; padding-top: 22px;">Device Information</div>          
+
+        <div data-role="navbar">
+            <ul>
+                <li>
+                    <a href="#menu" 
+                            data-icon="bullets" 
+                            data-iconpos="left" 
+                            data-theme="b"                                 
+                            class="ui-btn-icon-top ui-fullsize "
+                            onclick="$('html, body').animate({ scrollTop: '0px'}, 800);">
+                        button 1         
+                     </a>
+                </li>
+                <li>
+                    <a href="javascript:test2()" 
+                            data-icon="gear" 
+                            data-iconpos="left" 
+                            data-theme="b"                                 
+                            class="ui-btn-icon-top ui-fullsize "
+                            onclick="$('html, body').animate({ scrollTop: '0px'}, 800);">
+                        button 2         
+                     </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div data-role="main" class="ui-content" data-theme="a">
     
-    <h3>Device info</h3>
-    <i id="uptime"></i>
-    <hr>
-    
-    <table>
-    
-        <tr>
-            <th colspan="2" id="pos">Position</th>
-        </tr> 
-        <tr>
-            <td>Latitude</td>
-            <td id="lat" align="right"></td>
-        </tr>
-        <tr>
-            <td>Longitude</td>
-            <td id="lon" align="right"></td>
-        </tr>
-
-        <tr>
-            <th colspan="2" id="pos">Battery</th>
-        </tr> 
-        <tr>
-            <td>status</td>
-            <td id="bstat" align="right"></td>
-        </tr>
-        <tr>
-            <td>level</td>
-            <td id="blev" align="right"></td>
-        </tr>   
-
-        <tr>
-            <th colspan="2" id="pos">Device Orientation</th>
-        </tr> 
-        <tr>
-            <td>&alpha;</td>
-            <td id="doa" align="right"></td>
-        </tr>
-        <tr>
-            <td>&beta;</td>
-            <td id="dob" align="right"></td>
-        </tr>
-        <tr>
-            <td>&gamma;</td>
-            <td id="dog" align="right"></td>
-        </tr>
-
-        <tr>
-            <th colspan="2" id="pos">Light sensors</th>
-        </tr> 
-        <tr>
-            <td>light 1</td>
-            <td id="lux1" align="right"></td>
-        </tr>
-        <tr>
-            <td>light 2</td>
-            <td id="lux2" align="right"></td>
-        </tr>
-
-        <tr>
-            <th colspan="2" id="pos">Proximity</th>
-        </tr> 
-        <tr>
-            <td>proximity 1</td>
-            <td id="prox1" align="right"></td>
-        </tr>
-        <tr>
-            <td>proximity 2</td>
-            <td id="prox2" align="right"></td>
-        </tr>
-
-        <tr>
-            <th colspan="2" id="pos">Motion</th>
-        </tr> 
-        <tr>
-            <td>X</td>
-            <td id="dmx" align="right"></td>
-        </tr>
-        <tr>
-            <td>Y</td>
-            <td id="dmy" align="right"></td>
-        </tr>
-        <tr>
-            <td>Z</td>
-            <td id="dmz" align="right"></td>
-        </tr>
+        <h3>Device info</h3>
+        <i id="uptime"></i>
+        <hr>
         
-    </table>
+        <table>
+        
+            <tr>
+                <th colspan="3" id="pos">Position</th>
+            </tr> 
+            <tr>
+                <td>Latitude</td>
+                <td id="lat" align="right"></td>
+            </tr>
+            <tr>
+                <td>Longitude</td>
+                <td id="lon" align="right"></td>
+            </tr>
+
+            <tr>
+                <th colspan="3" id="pos">Device Orientation</th>
+            </tr> 
+            <tr>
+                <td>&alpha;</td>
+                <td id="doa" align="right"></td>
+            </tr>
+            <tr>
+                <td>&beta;</td>
+                <td id="dob" align="right"></td>
+            </tr>
+            <tr>
+                <td>&gamma;</td>
+                <td id="dog" align="right"></td>
+            </tr>
+            <tr>
+                <th colspan="3" id="pos">Motion</th>
+            </tr> 
+            <tr>
+                <td><i>x</i></td>
+                <td id="dmx" align="right"></td>
+            </tr>
+            <tr>
+                <td><i>y</i></td>
+                <td id="dmy" align="right"></td>
+            </tr>
+            <tr>
+                <td><i>z</i></td>
+                <td id="dmz" align="right"></td>
+            </tr>
+
+            <tr>
+                <th colspan="3" id="pos">Battery</th>
+            </tr> 
+            <tr>
+                <td>status</td>
+                <td id="bstat" align="right"></td>
+            </tr>
+            <tr>
+                <td>level</td>
+                <td id="blev" align="right"></td>
+            </tr>  
+
+            <tr>
+                <th colspan="3" id="pos">Light sensors</th>
+            </tr> 
+            <tr>
+                <td>light 1</td>
+                <td id="lux1" align="right"></td>
+            </tr>
+            <tr>
+                <td>light 2</td>
+                <td id="lux2" align="right"></td>
+            </tr>
+
+            <tr>
+                <th colspan="3" id="pos">Proximity</th>
+            </tr> 
+            <tr>
+                <td>proximity 1</td>
+                <td id="prox1" align="right"></td>
+            </tr>
+            <tr>
+                <td>proximity 2</td>
+                <td id="prox2" align="right"></td>
+            </tr>
+            
+        </table>
+
+    </div>
+
+    <div data-role="footer" data-id="foo2" data-position="fixed">
+        <div data-role="navbar">
+            <ul>
+                <li>
+                    <a href="javascript:test3()"                             
+                            data-rel="popup" 
+                            data-position-to="window" 
+                            data-transition="slideup"
+                            data-icon="edit" 
+                            data-iconpos="left" 
+                            data-theme="b"                                 
+                            class="ui-btn-icon-top ui-fullsize ">
+                        button 3
+                     </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- popup management -->
+
+    <div id="msg-box"               
+            data-role="popup"              
+            data-overlay-theme="b" 
+            data-theme="b" 
+            data-dismissible="false" 
+            data-history="false">   
+        <div data-role="header" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <h1 id="msg-box-title"></h1>
+        </div>              
+        <div role="main" class="ui-content">
+            <h3 id="msg-box-message"></h3>
+            <div style="text-align: center;">               
+                <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Chiudi</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-box"               
+            data-role="popup"              
+            data-overlay-theme="b" 
+            data-theme="b" 
+            data-dismissible="false" 
+            data-history="false">   
+        <div data-role="header" data-theme="a">
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <h1 id="confirm-box-title"></h1>
+        </div>              
+        <div role="main" class="ui-content">
+            <h3 id="confirm-box-message"></h3>  
+            <div style="text-align: center;">               
+                <a href="#" id="confirm-box-ok" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" style="width: 100px;">Conferma</a>
+                <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" style="width: 100px;" data-transition="flow">Annulla</a>  
+            </div>              
+        </div>
+    </div>
+
+    <!-- navigation menu -->
+
+    <div id="menu" 
+            data-theme="b" 
+            data-role="panel" 
+            data-position="left" 
+            data-display="reveal">
+
+        <div style="margin-top: 40px;">             
+            <ul data-role="listview">
+                <li><a data-ajax="false" href="?fleet=Prova">MENU 1</a></li>
+                <li><a data-ajax="false" href="?fleet=Mercurio">MENU 2</a></li>
+                <li><a data-ajax="false" href="?fleet=Gugel">MENU 3</a></li>
+            </ul>
+        </div>
+
+    </div>
+
 
 </div>
 
