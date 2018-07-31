@@ -27,25 +27,25 @@
 
     <!-- jq/jqm/css3 stack libraries -->
 
-    <link rel="stylesheet" href="js/jquery.mobile-1.4.5.css?x=<?php echo filemtime('js/jquery.mobile-1.4.5.css'); ?>" />
-    <script type="text/javascript" src="js/jquery-1.11.3.min.js?x=<?php echo filemtime('js/jquery-1.11.3.min.js'); ?>"></script>    
-    <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js?x=<?php echo filemtime('js/jquery.mobile-1.4.5.min.js'); ?>"></script>
-    <script type="text/javascript" src="js/jquery.validate.min.js?x=<?php echo filemtime('js/jquery.validate.min.js'); ?>"></script>
+    <link rel="stylesheet" href="js/jquery.mobile-1.4.5.css" />
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>    
+    <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
     
-    <link rel="stylesheet" href="css/custom-jqm.css?x=<?php echo filemtime('css/custom-jqm.css'); ?>"/>
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css?x=<?php echo filemtime('css/jquery.dataTables.min.css'); ?>">
+    <link rel="stylesheet" href="css/custom-jqm.css"/>
+    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
 
     <!-- jquery ui plugin -->
-    <link rel="stylesheet" href="js/jquery-ui.min.css?x=<?php echo filemtime('js/jquery-ui.min.css'); ?>">
-    <link rel="stylesheet" href="js/jquery-ui.theme.css?x=<?php echo filemtime('js/jquery-ui.theme.css'); ?>">      
-    <script src="js/jquery-ui.min.js?x=<?php echo filemtime('js/jquery-ui.min.js'); ?>"></script>
+    <link rel="stylesheet" href="js/jquery-ui.min.css">
+    <link rel="stylesheet" href="js/jquery-ui.theme.css">      
+    <script src="js/jquery-ui.min.js"></script>
 
     <!-- data tables plugin -->
-    <script src="js/jquery.dataTables.min.js?x=<?php echo filemtime('js/jquery.dataTables.min.js'); ?>"></script>
-    <script src="js/dataTables.jqueryui.min.js?x=<?php echo filemtime('js/dataTables.jqueryui.min.js'); ?>"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.jqueryui.min.js"></script>
 
     <!-- extra animations -->
-    <link rel="stylesheet" href="js/animate.css?x=<?php echo filemtime('js/animate.css'); ?>"/> 
+    <link rel="stylesheet" href="js/animate.css"/> 
 
     <style>
 
