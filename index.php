@@ -25,6 +25,15 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/favicons/apple-touch-icon-precomposed-72x72.png"><!-- iPad 1 e 2 -->
     <link rel="apple-touch-icon-precomposed" href="images/favicons/apple-touch-icon-precomposed-57x57.png"><!-- iPhone, iPod e Android 2.2+ -->
 
+    <style>
+
+    th {
+        text-align: left;
+        border-top: 1px black solid;        
+    }
+
+    </style>
+
     <script type="text/javascript">
 
         function getLocation() {
@@ -55,8 +64,14 @@
 
         function reload() {            
 
+            window.stop();
             getLocation();
+            
+            document.getElementById('uptime').innerHTML = new Date();
+
             setTimeout('reload()', 2000);  
+
+
         }
 
         function init() {
@@ -103,13 +118,11 @@
                 document.getElementById("dob").innerHTML = b;
                 document.getElementById("dog").innerHTML = g;
 
-
                 //el.style.transform = 'rotateZ('+a+'deg) 
                 //                   rotateX('+b+'deg) rotateY('+g+'deg)';
                 //... }, true);
               
-              });
-            
+              });            
 
             }
             else {
@@ -126,8 +139,16 @@
             if (window.DeviceMotionEvent) {
                 
                 window.addEventListener('devicemotion', function () {
-                    document.getElementById("dmx").innerHTML = event.acceleration.x;
-                    document.getElementById("dmy").innerHTML = event.acceleration.y;
+
+                    var x = event.acceleration.x;
+                    if (!x) return;
+                    var y = event.acceleration.y;
+                    var z = event.acceleration.z;
+
+                    document.getElementById("dmx").innerHTML = x.toFixed(4);
+                    document.getElementById("dmy").innerHTML = y.toFixed(4);
+                    document.getElementById("dmz").innerHTML = z.toFixed(4);
+
                 }, true);
 
             }
@@ -135,6 +156,7 @@
 
                 document.getElementById("dmx").innerHTML = 'N/A'; 
                 document.getElementById("dmy").innerHTML = 'N/A';
+                document.getElementById("dmz").innerHTML = 'N/A';
 
             } 
 
@@ -177,9 +199,7 @@
 
             reload(); 
 
-
         }
-
 
     </script>
 
@@ -190,11 +210,13 @@
 <div>
     
     <h3>Device info</h3>
+    <i id="uptime"></i>
+    <hr>
     
     <table>
     
         <tr>
-            <td colspan="2" id="pos"><b>Position</b></td>
+            <th colspan="2" id="pos">Position</th>
         </tr> 
         <tr>
             <td>Latitude</td>
@@ -206,7 +228,7 @@
         </tr>
 
         <tr>
-            <td colspan="2" id="pos"><b>Battery</b></td>
+            <th colspan="2" id="pos">Battery</th>
         </tr> 
         <tr>
             <td>status</td>
@@ -218,7 +240,7 @@
         </tr>   
 
         <tr>
-            <td colspan="2" id="pos"><b>Device Orientation</b></td>
+            <th colspan="2" id="pos">Device Orientation</th>
         </tr> 
         <tr>
             <td>&alpha;</td>
@@ -234,7 +256,7 @@
         </tr>
 
         <tr>
-            <td colspan="2" id="pos"><b>Light sensors</b></td>
+            <th colspan="2" id="pos">Light sensors</th>
         </tr> 
         <tr>
             <td>light 1</td>
@@ -246,7 +268,7 @@
         </tr>
 
         <tr>
-            <td colspan="2" id="pos"><b>Proximity</b></td>
+            <th colspan="2" id="pos">Proximity</th>
         </tr> 
         <tr>
             <td>proximity 1</td>
@@ -258,7 +280,7 @@
         </tr>
 
         <tr>
-            <td colspan="2" id="pos"><b>Motion</b></td>
+            <th colspan="2" id="pos">Motion</th>
         </tr> 
         <tr>
             <td>X</td>
@@ -267,6 +289,10 @@
         <tr>
             <td>Y</td>
             <td id="dmy" align="right"></td>
+        </tr>
+        <tr>
+            <td>Z</td>
+            <td id="dmz" align="right"></td>
         </tr>
         
     </table>
