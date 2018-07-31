@@ -2,6 +2,7 @@
 //phpinfo();
 ?>
 
+<h3>Geolocator</h3>
 <div id="demo">
 	loading position ...
 </div>
@@ -19,6 +20,7 @@ function getLocation() {
 }
 
 function showPosition(position) {
+	console.log(".......");
     x.innerHTML = "Latitude: " + position.coords.latitude + 
     "<br>Longitude: " + position.coords.longitude; 
 }
@@ -28,6 +30,8 @@ function refresh() {
 	getLocation();
 	setTimeout('refresh()', 1000);	
 }
+
+refresh()
 
 </script>
 
