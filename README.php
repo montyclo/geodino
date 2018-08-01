@@ -14,10 +14,10 @@ oc new-app montyclo:latest~https://github.com/montyclo/geodino.git --name='monty
 DATABASE
 --------
 
-Username: 		userE42 
-Password: 		KSYn2UmfGeSs8f0t 
-Database Name: 	db1 
-Connection URL:	mysql://mysql:3306/
+Username: userVP4 
+Password: pIO0M86qg5PLEYQc 
+Database Name: db1 
+Connection URL: mysql://mysql:3306/
 
  */
 ?>
