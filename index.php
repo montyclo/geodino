@@ -9,8 +9,6 @@
  Database Name: sampledb 
  Connection URL: mysql://mysql:3306/
 
-
-
 */
 
 $mysqli = mysqli_connect(
@@ -34,7 +32,7 @@ $mysqli_close( $mysqli );
     <meta charset="utf-8" />        
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-    <title>Home page</title>
+    <title>TEST WITH MYSQL</title>
 
     <!-- Favicon -->
     <meta name="msapplication-TileImage"content="images/favicons/tile.png"> <!-- Windows 8 -->
@@ -410,6 +408,18 @@ $mysqli_close( $mysqli );
             </tr>
             
         </table>
+
+<hr>
+
+<?php
+
+    echo getenv('OPENSHIFT_MYSQL_DB_HOST') . "<br>"; 
+    echo getenv('OPENSHIFT_MYSQL_DB_USERNAME') . "<br>";
+    echo getenv('OPENSHIFT_MYSQL_DB_HOST') . "<br>";
+    echo getenv('OPENSHIFT_MYSQL_DB_PASSWORD') . "<br>";
+    echo getenv('OPENSHIFT_MYSQL_DB_PORT') . "<br>";
+
+?>
 
     </div>
 
