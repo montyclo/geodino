@@ -2,6 +2,27 @@
 
 //phpinfo();
 
+/*
+ 
+ Username: user62G 
+ Password: 6UEwTF86aOBPa3u4 
+ Database Name: sampledb 
+ Connection URL: mysql://mysql:3306/
+
+
+
+*/
+
+$mysqli = mysqli_connect(
+    getenv('OPENSHIFT_MYSQL_DB_HOST'), 
+    getenv('OPENSHIFT_MYSQL_DB_USERNAME'), 
+    getenv('OPENSHIFT_MYSQL_DB_HOST'), 
+    getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),
+    getenv('OPENSHIFT_MYSQL_DB_PORT')
+);
+echo "OK";
+$mysqli_close( $mysqli );
+
 ?>
 
 <!DOCTYPE html>
@@ -281,7 +302,7 @@
                             data-iconpos="left" 
                             data-theme="b"                                 
                             class="ui-btn-icon-top ui-fullsize "
-                            onclick="$('html, body').animate({ scrollTop: '0px'}, 800);">
+                            onclick="$('html, body').animate({ scrollTop: '0px'}, 200);">
                         button 1         
                      </a>
                 </li>
