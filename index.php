@@ -2,13 +2,11 @@
 
 include('include/db.php');
 
-echo MYSQL_HOST . ", " . MYSQL_USER . ", " . MYSQL_PASS . ", " . MYSQL_DB . ", " . MYSQL_PORT . "<br>"; 
+//echo MYSQL_HOST . ", " . MYSQL_USER . ", " . MYSQL_PASS . ", " . MYSQL_DB . ", " . MYSQL_PORT . "<br>";
 
 $mysqli = mysqli_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB, MYSQL_PORT );
-$mysqli_close( $mysqli );
-
-echo "OK";
-
+mysqli_close( $mysqli );
+//echo "OK";
 
 ?>
 
@@ -399,16 +397,6 @@ echo "OK";
         </table>
 
 <hr>
-
-<?php
-
-    echo getenv('OPENSHIFT_MYSQL_DB_HOST') . "<br>"; 
-    echo getenv('OPENSHIFT_MYSQL_DB_USERNAME') . "<br>";
-    echo getenv('OPENSHIFT_MYSQL_DB_HOST') . "<br>";
-    echo getenv('OPENSHIFT_MYSQL_DB_PASSWORD') . "<br>";
-    echo getenv('OPENSHIFT_MYSQL_DB_PORT') . "<br>";
-
-?>
 
     </div>
 
