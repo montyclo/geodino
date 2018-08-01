@@ -1,25 +1,14 @@
 <?php
 
-//phpinfo();
+include('include/db.php');
 
-/*
- 
- Username: user62G 
- Password: 6UEwTF86aOBPa3u4 
- Database Name: sampledb 
- Connection URL: mysql://mysql:3306/
+echo MYSQL_HOST . ", " . MYSQL_USER . ", " . MYSQL_PASS . ", " . MYSQL_DB . ", " . MYSQL_PORT . "<br>"; 
 
-*/
-
-$mysqli = mysqli_connect(
-    getenv('OPENSHIFT_MYSQL_DB_HOST'), 
-    getenv('OPENSHIFT_MYSQL_DB_USERNAME'), 
-    getenv('OPENSHIFT_MYSQL_DB_HOST'), 
-    getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),
-    getenv('OPENSHIFT_MYSQL_DB_PORT')
-);
-echo "OK";
+$mysqli = mysqli_connect( MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB, MYSQL_PORT );
 $mysqli_close( $mysqli );
+
+echo "OK";
+
 
 ?>
 
