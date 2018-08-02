@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+
+<head> 
+
+    <meta charset="utf-8" />        
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <title>Reverse geocoder</title>
+
+    <!-- jq/jqm/css3 stack libraries -->
+
+    <script type="text/javascript" src="../../../js/jquery-1.11.3.min.js"></script>    
+    
+    <script type="text/javascript">
+
+    function reverse_geocode (lat, lon) {
+
+		var BASE_URL = 'https://nominatim.openstreetmap.org/reverse?format=json';
+		var url = BASE_URL;
+		url += '&lat=' + lat;
+		url += '&lon=' + lon;
+		url += '&zoom=18&addressdetails=1';
+
+debugger;
+
+		$.ajax ({
+                type: "GET",                
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function( data ) {
+                	debugger;
+                	$('#results').html( data );
+                },
+                error: function( data ) {
+                	debugger;
+                	$('#results').html( data );		
+                }
+        });
+
+    }
+
+	function getLocation() {
+        try {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        console.log('position detection ok');
+                        var lat = position.coords.latitude;
+                        var lon = position.coords.longitude;
+						document.getElementById("lat").innerHTML = lat.toFixed(6);
+                        document.getElementById("lon").innerHTML = lon.toFixed(6);
+                    	reverse_geocode (lat, lon);
+                    },
+                    function () {
+                        console.log('position detection fail!');
+                        document.getElementById("pos").innerHTML = "position N/A";
+                    }
+                );
+            } else {
+                document.getElementById("pos").innerHTML = "Geolocation is not supported by this browser.";
+            }                
+        }
+        catch(e) {
+            document.getElementById("pos").innerHTML = "error: " + e;    
+        }
+    }
+
+
+    function reload() {            
+
+        window.stop();
+        getLocation();
+        
+        document.getElementById('uptime').innerHTML = new Date();
+        setTimeout('reload()', 2000);
+
+    }
+
+
+    </script>
+
+</head>
+
+<body onload="reload()">
+
+
+<div id="pos"></div>
+<div id="lat"></div>
+<div id="lon"></div>
+<hr>
+<div id="results">
+reverse geocoding  ...	
+</div>
+<hr>
+<i id="uptime"></i>
+
+
+
+
+</body>
+
+
+</html>
+
+
+
+
