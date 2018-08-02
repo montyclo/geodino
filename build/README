@@ -1,7 +1,17 @@
+ACCOUNTS:
+
+	GITHUB
+
+	email: 		monty.urmet.cloud@gmail.com
+	username: 	montyclo
+	password: 	Aig*$
+
+	OPENSHIFT
+	idem di sopra
+
 
 LOGIN 
 -----
-
 
 oc login https://api.starter-us-west-1.openshift.com
 
@@ -40,9 +50,14 @@ oc logs -f bc/geodino
 oc logs -f dc/geodino
 
 
-DATABASE CONFIG
----------------
+DATABASE 
+--------
 
+local to remote port forwarding:
+
+oc port-forward mysql-1-qfsr2 3307:3306
+
+CREDENTIALS:
 Username: userVP4 
 Password: pIO0M86qg5PLEYQc 
 Database Name: db1 

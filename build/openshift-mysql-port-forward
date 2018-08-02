@@ -1,0 +1,4 @@
+#!/bin/sh
+oc port-forward mysql-1-qfsr2 3307:3306 >/tmp/mysql-pfw-3307 2>&1 &
+
+
