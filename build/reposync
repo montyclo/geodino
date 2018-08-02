@@ -1,0 +1,5 @@
+#!/bin/sh
+#oc rsync . app1-1-fxcgr:.
+oc rsync . app1-1-fxcgr:. --exclude=.git* --exclude=build* --exclude=README*
+
+
