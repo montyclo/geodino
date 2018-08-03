@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html>
+
+<head> 
+
+    <meta charset="utf-8" />        
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <title>Device sensor detection</title>
+
+    <style>
+
+        /* marker classes used for dynamic view purposes */         
+            
+        .blink_me {
+          animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {  
+          50% { opacity: 0; }
+        }   
+
+        th {
+            text-align: left;
+            border-top: 1px black solid;        
+        }
+
+    </style>
+
+    <script type="text/javascript" src="../../../js/jquery-1.11.3.min.js"></script>    
+
+    <script type="text/javascript">
+
+        function formatNA (v) {
+            if (!v) return "N/A";
+            if (v == null) return "N/A";
+            return v;
+        }
+
+        window.dmx = -1000000;
+        window.dmy = -1000000;
+        window.dmz = -1000000;
+
+        function getLocation() {
+            try {
+                if (navigator.geolocation) {
+
+                    navigator.geolocation.getCurrentPosition(
+
+                        function (position) {
+
+                            console.log('position detection ok');
+                            
+                            var lat = position.coords.latitude;
+                            var lon = position.coords.longitude;
+                            var acc = position.coords.accuracy;
+                            var alt = position.coords.altitude;
+                            var aac = position.coords.altitudeAccuracy;
+                            var hea = position.coords.heading;
+                            var spe = position.coords.speed;
+
+                            var tim = new Date(position.timestamp);
+
+                            document.getElementById("lat").innerHTML = lat.toFixed( 8 );
+                            document.getElementById("lon").innerHTML = lon.toFixed( 8 );
+                            document.getElementById("acc").innerHTML = formatNA( acc );
+                            document.getElementById("alt").innerHTML = formatNA( alt );
+                            document.getElementById("aac").innerHTML = formatNA( aac );
+                            document.getElementById("hea").innerHTML = formatNA( hea );
+                            document.getElementById("spe").innerHTML = formatNA( spe );
+                            document.getElementById("tim").innerHTML = formatNA( tim );
+                        
+                        },
+                        
+                        function () {
+                            console.log('position detection fail!');
+                            document.getElementById("pos").innerHTML = "position N/A";
+                        }
+
+                    );
+                } else {
+                    document.getElementById("pos").innerHTML = "Geolocation is not supported by this browser.";
+                }                
+            }
+            catch(e) {
+                document.getElementById("pos").innerHTML = "error: " + e;    
+            }
+        }
+
+
+        function reload() {            
+
+            window.stop();
+            getLocation();
+            
+            document.getElementById('uptime').innerHTML = new Date();
+            setTimeout('reload()', 2000);
+
+        }
+
+
+        function init() {
+
+            // see https://girliemac.com/presentation-slides/html5-mobile-approach/deviceAPIs.html
+            
+            //
+            // Battery
+            //
+
+            var battery = navigator.battery || navigator.webkitBattery;
+
+            if (battery) {
+
+                battery.addEventListener('chargingchange', function () {
+                    document.getElementById("blev").innerHTML = '' + battery.level * 100 + ' %';
+                });
+
+                battery.addEventListener('levelchange', function () {
+                    document.getElementById("bstat").innerHTML = battery.charging ? 'charging ...' : 'NOT charging';
+                });
+
+            }
+            else {
+
+                document.getElementById("blev").innerHTML = 'N/A'; 
+                document.getElementById("bstat").innerHTML = 'N/A';
+
+            }
+
+            //
+            // Device orientation
+            //
+
+            if (window.DeviceOrientationEvent) {
+
+              window.addEventListener('deviceorientation', function(e) {
+                
+                a = Math.floor(e.alpha);
+                b = Math.floor(e.beta);
+                g = Math.floor(e.gamma);
+            
+                document.getElementById("doa").innerHTML = a; 
+                document.getElementById("dob").innerHTML = b;
+                document.getElementById("dog").innerHTML = g;
+
+                //el.style.transform = 'rotateZ('+a+'deg) 
+                //                   rotateX('+b+'deg) rotateY('+g+'deg)';
+                //... }, true);
+              
+              });            
+
+            }
+            else {
+
+                document.getElementById("doa").innerHTML = 'N/A'; 
+                document.getElementById("dob").innerHTML = 'N/A';
+                document.getElementById("dog").innerHTML = 'N/A';
+
+            }
+
+            //
+            // Motion
+            // 
+            if (window.DeviceMotionEvent) {
+                
+                window.addEventListener('devicemotion', function () {
+
+                    var x = event.acceleration.x;
+                    if (!x) return;
+                    var y = event.acceleration.y;
+                    var z = event.acceleration.z;
+
+                    document.getElementById("dmx").innerHTML = x.toFixed(4);
+                    document.getElementById("dmy").innerHTML = y.toFixed(4);
+                    document.getElementById("dmz").innerHTML = z.toFixed(4);
+
+                    if ( x > window.dmx || x < window.dmx ) window.dmx = x;
+                    if ( y > window.dmy || y < window.dmy ) window.dmy = y;
+                    if ( z > window.dmz || z < window.dmz ) window.dmz = z; 
+
+                    document.getElementById("dmx-max").innerHTML = x.toFixed(4);
+                    document.getElementById("dmy-max").innerHTML = y.toFixed(4);
+                    document.getElementById("dmz-max").innerHTML = z.toFixed(4);
+
+
+                }, true);
+
+            }
+            else {
+
+                document.getElementById("dmx").innerHTML = 'N/A'; 
+                document.getElementById("dmy").innerHTML = 'N/A';
+                document.getElementById("dmz").innerHTML = 'N/A';
+
+            } 
+
+            //
+            // Light sensors
+            //
+
+            window.addEventListener('devicelight', function(e) {                
+                document.getElementById("lux1").innerHTML = e.value; // value in double
+                //< 400   Indoor
+                //400-1000    Office lighting. Outdoor (in foggy San Francisco)
+                //> 1000  Outdoor daylight (anywhere else in California)
+            }); 
+           
+
+            window.addEventListener('lightlevel', function(e) {
+                document.getElementById("lux2").innerHTML = e.value; // value in double
+                //dim < 50 lux    dark enough that the light produced by a white background is eye-straining or distracting
+                //normal  50-10000 lux    office building hallway, very dark overcast day, office lighting, sunrise or sunset on a clear day, overcast day, or similar
+                //bright  > 10000 lux direct sunlight, or similarly bright conditions that make it hard to see things that aren't high-contrast
+            }); 
+
+            //
+            // Proximity sensors
+            //
+
+            window.addEventListener('deviceproximity', function(e) {
+                document.getElementById("prox1").innerHTML = e.value; // value in double
+            }, function(e) {
+                document.getElementById("prox1").innerHTML = "N/A"; 
+            });
+
+            window.addEventListener('userproximity', function(e) {
+               document.getElementById("prox2").innerHTML = e.value; // value in double
+            }); 
+
+            //
+            // Continuously monitoring functions
+            //
+
+            reload(); 
+
+        }
+
+    </script>
+
+</head>
+
+<body
+    onload="init()">
+    
+    <h3>Device info</h3>
+    <small><i id="uptime"></i></small>
+    
+    <table>
+    
+        <tr>
+            <th colspan="3" id="pos">Position</th>
+        </tr>
+        <tr>
+            <td>Time of Fix</td>
+            <td colspan="2" id="tim" align="right"></td>
+        </tr>    
+        <tr>
+            <td>Latitude</td>
+            <td colspan="2" id="lat" align="right"></td>
+        </tr>
+        <tr>
+            <td>Longitude</td>
+            <td colspan="2" id="lon" align="right"></td>
+        </tr>
+        <tr>
+            <td>Accuracy</td>
+            <td colspan="2" id="acc" align="right"></td>
+        </tr>
+        <tr>
+            <td>Altitude</td>
+            <td colspan="2" id="alt" align="right"></td>
+        </tr>        
+        <tr>
+            <td>Alt. Accuracy</td>
+            <td colspan="2" id="aac" align="right"></td>
+        </tr>
+
+        <tr>
+            <td>Heading</td>
+            <td colspan="2" id="hea" align="right"></td>
+        </tr>
+            
+        <tr>
+            <td>Speed</td>
+            <td colspan="2" id="spe" align="right"></td>
+        </tr>
+
+        <tr>
+            <th colspan="3" id="pos">Device Orientation</th>
+        </tr> 
+        <tr>
+            <td>&alpha;</td>
+            <td colspan="2" id="doa" align="right"></td>
+        </tr>
+        <tr>
+            <td>&beta;</td>
+            <td colspan="2" id="dob" align="right"></td>
+        </tr>
+        <tr>
+            <td>&gamma;</td>
+            <td colspan="2" id="dog" align="right"></td>
+        </tr>
+        <tr>
+            <th colspan="3" id="pos">Motion</th>
+        </tr> 
+        <tr>
+            <td><i>x</i></td>
+            <td id="dmx" align="right"></td>
+            <td id="dmx-max" align="right"></td>
+        </tr>
+        <tr>
+            <td><i>y</i></td>
+            <td id="dmy" align="right"></td>
+            <td id="dmy-max" align="right"></td>
+        </tr>
+        <tr>
+            <td><i>z</i></td>
+            <td id="dmz" align="right"></td>
+            <td id="dmz-max" align="right"></td>
+        </tr>
+
+        <tr>
+            <th colspan="3" id="pos">Battery</th>
+        </tr> 
+        <tr>
+            <td>status</td>
+            <td colspan="2" id="bstat" align="right"></td>
+        </tr>
+        <tr>
+            <td>level</td>
+            <td colspan="2" id="blev" align="right"></td>
+        </tr>  
+
+        <tr>
+            <th colspan="3" id="pos">Light sensors</th>
+        </tr> 
+        <tr>
+            <td>light 1</td>
+            <td colspan="2" id="lux1" align="right"></td>
+        </tr>
+        <tr>
+            <td>light 2</td>
+            <td colspan="2" id="lux2" align="right"></td>
+        </tr>
+
+        <tr>
+            <th colspan="3" id="pos">Proximity</th>
+        </tr> 
+        <tr>
+            <td>proximity 1</td>
+            <td colspan="2" id="prox1" align="right"></td>
+        </tr>
+        <tr>
+            <td>proximity 2</td>
+            <td colspan="2" id="prox2" align="right"></td>
+        </tr>
+        
+    </table>
+
+
+</div>
+
+</body>
+
+</html>
