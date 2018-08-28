@@ -1,5 +1,6 @@
 #!/bin/sh
+POD=app1-1-wk59q
 #oc rsync . app1-1-fxcgr:.
-oc rsync . app1-1-fxcgr:. --exclude=.git* --exclude=build* --exclude=README*
+oc rsync . $POD:. --exclude=.git* --exclude=build* --exclude=README*
 
 

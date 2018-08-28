@@ -3,6 +3,8 @@
 include('include/db.php');
 include('include/logs.php');
 
+
+mylog("HTTP session from " . $_SERVER['HTTP_X_FORWARDED_FOR'] . " server " . $_SERVER['REMOTE_ADDR']);
 mylog("Trying database connection: " 
 		. MYSQL_HOST . ", " 
 		. MYSQL_USER . ", " 

@@ -1,3 +1,7 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -7,7 +11,7 @@
     <meta charset="utf-8" />        
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
-    <title>Reverse geocoder</title>
+    <title>IP locator</title>
 
     <!-- jq/jqm/css3 stack libraries -->
 
@@ -71,66 +75,26 @@
 
     } 
 
-    function reverse_geocode( lat, lon ) {
+    function find_ip_location( ) {
 
-		var BASE_URL = 'https://nominatim.openstreetmap.org/reverse?format=json';
-		var url = BASE_URL;
-		url += '&lat=' + lat;
-		url += '&lon=' + lon;
-		url += '&zoom=18&addressdetails=1';
-
-        //debugger;
+		var url = "https://ip-api.io/json/";
+		url += $("#address").val().trim();
 
 		$.ajax ({
                 type: "GET",                
                 url: url,
-                contentType: "application/json; charset=utf-8",
+                //contentType: "application/json; charset=utf-8",
                 dataType: 'json',
                 success: function( data ) {
-                	$('#location').html( data.display_name );
-                	$('#results').html( format_json( data ) );
+                	//debugger;
+                    $('#results').html( format_json( data ) );
+                    //$('#address').val( data.query );
                 },
                 error: function( data ) {
+                	//debugger;
                 	$('#results').html( '<i style="color:red;">' + format_json( data ) + '</i>');		
                 }
         });
-
-    }
-
-	function getLocation() {
-        try {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        console.log('position detection ok');
-                        var lat = position.coords.latitude;
-                        var lon = position.coords.longitude;
-						document.getElementById("lat").innerHTML = lat.toFixed(8);
-                        document.getElementById("lon").innerHTML = lon.toFixed(8);
-                    	reverse_geocode (lat, lon);
-                    },
-                    function () {
-                        console.log('position detection fail!');
-                        document.getElementById("pos").innerHTML = "position N/A";
-                    }
-                );
-            } else {
-                document.getElementById("pos").innerHTML = "Geolocation is not supported by this browser.";
-            }                
-        }
-        catch(e) {
-            document.getElementById("pos").innerHTML = "error: " + e;    
-        }
-    }
-
-
-    function reload() {            
-
-        //window.stop();
-        getLocation();
-        
-        document.getElementById('uptime').innerHTML = new Date();
-        setTimeout('reload()', 2000);
 
     }
 
@@ -139,26 +103,18 @@
 
 </head>
 
-<body onload="reload()">
+<body onload="find_ip_location()">
 
-
-<h3 id="location">Unknown location ???</h3>
+<h3>IP Locator</h3>
+IP Address: <input type="text" id="address" value="<?php echo $_SERVER['HTTP_X_FORWARDED_FOR']; ?>"> 
+<input type="button" value="Geolocate IP" onclick="find_ip_location()">
+<br>
 <pre id="results" style="overflow: scroll;">
 finding location ...	
 </pre>
-<hr>
-<i id="pos">Detected position: </i>
-<b id="lat">n/a</b> , <b id="lon">n/a</b>
-at <i id="uptime"></i>
-
-
-
 
 </body>
-
-
 </html>
-
 
 
 
